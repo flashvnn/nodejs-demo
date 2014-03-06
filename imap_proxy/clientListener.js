@@ -40,4 +40,4 @@ state.conn = new Socket();
   return state.conn.connect(REMOTE_SERVER_PORT, IMAP_SERVER);
 };
 
-export.listener = listener;
+exports.listener = listener;
