@@ -1,6 +1,8 @@
 var tls = require("tls");
 var IMAP_SERVER = "imap.googlemail.com";
 var REMOTE_SERVER_PORT = 993;
+var state = {};
+var Socket = require("net").Socket;
 
 var listener = function(connectionToClient) { //This callback is run when the server gets a connection from a client.
   var connectionToImapServer, isConnected;

@@ -1,8 +1,6 @@
 (function() {
 
   var net = require("net");
-  var Socket = require("net").Socket;
-  var state = {};
   var LOCAL_SERVER_PORT = 3737;
   var clientListener = require("./clientListener");
 
