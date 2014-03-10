@@ -52,15 +52,6 @@ var downloadParallel = function(parallel_callback){
 	console.time('downloadParallel');
 	console.log("=======Download parallel start=======");
 	var count = 0;
-
-	var checkAllDownload = function(){
-		count++;
-		if(count == images.length){
-			console.log("=======Download parallel all images complete=======");
-			console.timeEnd('downloadParallel');
-			parallel_callback();
-		}
-	}
 	var downloadById = function (id){
 			download(images[id], "parallel_" + getImageName(images[id]), function() {
 				console.log("Download image complte: " + images[id]);
@@ -70,6 +61,15 @@ var downloadParallel = function(parallel_callback){
 	for (var i = 0; i < images.length; i++) {
 			downloadById(i);
 	};
+
+	var checkAllDownload = function(){
+		count++;
+		if(count == images.length){
+			console.log("=======Download parallel all images complete=======");
+			console.timeEnd('downloadParallel');
+			parallel_callback();
+		}
+	}
 }
 
 async.series([
