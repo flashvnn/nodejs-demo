@@ -31,7 +31,7 @@ var getImageName = function(url) {
 
 var downloadSeries = function(serial_callback){
 	console.time('downloadSeries');
-	console.log("Download series start");
+	console.log("=======Download series start=======");
 	async.forEachSeries(images, function(image, callback) {
 		download(image, "series_" + getImageName(image), function() {
 			console.log("Download image complte: " + image);
@@ -42,7 +42,7 @@ var downloadSeries = function(serial_callback){
 			console.log("Error:");
 			console.log(err);
 		}
-		console.log("Download series all images complete");
+		console.log("=======Download series all images complete=======");
 		console.timeEnd('downloadSeries');
 		serial_callback();
 	});
@@ -50,82 +50,27 @@ var downloadSeries = function(serial_callback){
 
 var downloadParallel = function(parallel_callback){
 	console.time('downloadParallel');
-	console.log("Download parallel start");
-	async.parallel([
-	    function(callback){
-				download(images[0], "parallel_" + getImageName(images[0]), function() {
-					console.log("Download image complte: " + images[0]);
-					callback();
-				});
-	    },
-	    function(callback){
-				download(images[1], "parallel_" + getImageName(images[1]), function() {
-					console.log("Download image complte: " + images[1]);
-					callback();
-				});
-	    },
-	    function(callback){
-				download(images[2], "parallel_" + getImageName(images[2]), function() {
-					console.log("Download image complte: " + images[2]);
-					callback();
-				});
-	    },
-	    function(callback){
-				download(images[3], "parallel_" + getImageName(images[3]), function() {
-					console.log("Download image complte: " + images[3]);
-					callback();
-				});
-	    },
-	    function(callback){
-				download(images[4], "parallel_" + getImageName(images[4]), function() {
-					console.log("Download image complte: " + images[4]);
-					callback();
-				});
-	    },
-	    function(callback){
-				download(images[5], "parallel_" + getImageName(images[5]), function() {
-					console.log("Download image complte: " + images[5]);
-					callback();
-				});
-	    },
-	    function(callback){
-				download(images[6], "parallel_" + getImageName(images[6]), function() {
-					console.log("Download image complte: " + images[6]);
-					callback();
-				});
-	    },
-	    function(callback){
-				download(images[7], "parallel_" + getImageName(images[7]), function() {
-					console.log("Download image complte: " + images[7]);
-					callback();
-				});
-	    },
-	    function(callback){
-				download(images[8], "parallel_" + getImageName(images[8]), function() {
-					console.log("Download image complte: " + images[8]);
-					callback();
-				});
-	    },
-	    function(callback){
-				download(images[9], "parallel_" + getImageName(images[9]), function() {
-					console.log("Download image complte: " + images[9]);
-					callback();
-				});
-	    }
+	console.log("=======Download parallel start=======");
+	var count = 0;
 
-	],
-	// optional callback
-	function(err, results){
-		if(err){
-			console.log("Error:");
-			console.log(err);
+	var checkAllDownload = function(){
+		count++;
+		if(count == images.length){
+			console.log("=======Download parallel all images complete=======");
+			console.timeEnd('downloadParallel');
+			parallel_callback();
 		}
-		console.log("Download parallel all images complete");
-		console.timeEnd('downloadParallel');
-		parallel_callback();
-	});
+	}
+	var downloadById = function (id){
+			download(images[id], "parallel_" + getImageName(images[id]), function() {
+				console.log("Download image complte: " + images[id]);
+				checkAllDownload();
+			});
+	}
+	for (var i = 0; i < images.length; i++) {
+			downloadById(i);
+	};
 }
-
 
 async.series([
     function(callback){
@@ -134,8 +79,8 @@ async.series([
     function(callback){
         downloadParallel(callback);
     }
-],
-// optional callback
-function(err, results){
-    console.log("All test download run complete");
-});
+	],
+	function(err, results){
+	    console.log("All test download run complete");
+	}
+);
